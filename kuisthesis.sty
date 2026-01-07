@@ -573,9 +573,9 @@
 \newcounter{subparagraph}[paragraph]
 
 \ifDS@english						% 2.10 (1) >>
-\def\thesection{Chapter~\arabic{section}}
+\def\thesection{\arabic{section}}
 \else	
-\def\thesection{第\arabic{section}章}
+\def\thesection{\arabic{section}}
 \fi							% 2.10 (1) <<
 \def\thesubsection{\arabic{section}.\arabic{subsection}}	% 2.10 (1)
 \def\thesubsubsection{\thesubsection.\arabic{subsubsection}}
