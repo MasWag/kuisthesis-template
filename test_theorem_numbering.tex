@@ -12,6 +12,17 @@
 
 \documentclass[master]{kuisthesis}
 
+% Load cleveref for smart cross-references (optional but recommended for testing)
+% Note: cleveref must be loaded after hyperref (if used)
+\usepackage{cleveref}
+
+% Configure cleveref for Japanese theorem names
+\crefname{thm}{定理}{定理}
+\crefname{lem}{補題}{補題}
+\crefname{prop}{命題}{命題}
+\crefname{cor}{系}{系}
+\crefname{defn}{定義}{定義}
+
 % Define theorem-like environments numbered by section
 % This is the main feature being tested
 \newtheorem{thm}{定理}[section]
@@ -38,6 +49,7 @@
 \verb|\newtheorem{thm}{定理}[section]| を使用することで、定理番号が「定理 1.1」のように
 セクション番号と共に表示されます。また、複数の定理型環境が同じカウンタを共有する場合
 （\verb|\newtheorem{lem}[thm]{補題}|）も正しく動作することを確認します。
+さらに、\verb|\ref{}| および \verb|\cref{}| による相互参照が正しく機能することも検証します。
 \end{jabstract}
 
 \begin{eabstract}
@@ -45,84 +57,129 @@ This document tests that theorem environments can be numbered within sections.
 By using \verb|\newtheorem{thm}{定理}[section]|, theorem numbers will be displayed
 in the format "定理 1.1" with the section number. It also verifies that multiple
 theorem-like environments can share the same counter using the syntax
-\verb|\newtheorem{lem}[thm]{補題}|.
+\verb|\newtheorem{lem}[thm]{補題}|. Additionally, it tests cross-references
+using \verb|\ref{}| and \verb|\cref{}|.
 \end{eabstract}
 
 \tableofcontents
 
 \section{セクション番号による定理番号付けのテスト}
+\label{sec:first}
 
-このセクションでは、定理が「定理 1.1」、「定理 1.2」として番号付けされることを確認します。
+このセクション（\ref{sec:first}）では、定理が「定理 1.1」、「定理 1.2」として番号付けされることを確認します。
 
-\begin{thm}
+\begin{thm}\label{thm:first}
 これは第一セクションの最初の定理です。番号は「定理 1.1」となるべきです。
 $$ a^2 + b^2 = c^2 $$
 \end{thm}
 
-\begin{thm}
+\begin{thm}\label{thm:second}
 これは第一セクションの二番目の定理です。番号は「定理 1.2」となるべきです。
 \end{thm}
 
-\begin{defn}
+\begin{defn}\label{defn:first}
 定義環境も独立してセクションごとに番号付けされます。これは「定義 1.1」となるべきです。
 \end{defn}
 
-\section{カウンタの共有テスト}
+\section{カウンタの共有テストと相互参照}
+\label{sec:second}
 
-このセクションでは、定理番号がリセットされ、「定理 2.1」から始まります。
+このセクション（\ref{sec:second}）では、定理番号がリセットされ、「定理 2.1」から始まります。
 また、補題、命題、系が定理と同じカウンタを共有することを確認します。
 
-\begin{thm}
+\subsection{基本的な定理型環境}
+\label{subsec:basic}
+
+サブセクション（\ref{subsec:basic}）内での定理を確認します。
+
+\begin{thm}\label{thm:third}
 これは第二セクションの最初の定理です。番号は「定理 2.1」となるべきです。
+前述の\ref{thm:first}（\cref{thm:first}）を参照しています。
 \end{thm}
 
-\begin{lem}
+\begin{lem}\label{lem:first}
 これは補題ですが、定理と同じカウンタを使用します。番号は「補題 2.2」となるべきです。
 \end{lem}
 
-\begin{prop}
+\begin{prop}\label{prop:first}
 これは命題ですが、定理と同じカウンタを使用します。番号は「命題 2.3」となるべきです。
 \end{prop}
 
-\begin{thm}
+\begin{thm}\label{thm:fourth}
 これは第二セクションの二番目の定理です。番号は「定理 2.4」となるべきです。
 \end{thm}
 
-\begin{cor}
+\begin{cor}\label{cor:first}
 これは系ですが、定理と同じカウンタを使用します。番号は「系 2.5」となるべきです。
+\ref{thm:fourth}の系として導かれます。
 \end{cor}
 
-\begin{defn}
+\begin{defn}\label{defn:second}
 定義環境は独立したカウンタを持つため、番号は「定義 2.1」となるべきです。
 \end{defn}
 
 \subsection{サブセクション内での番号付け}
+\label{subsec:numbering}
 
 サブセクション内でも、定理番号は親セクション（第二セクション）に基づいて番号付けされます。
 
-\begin{thm}
+\begin{thm}\label{thm:fifth}
 サブセクション内の定理です。番号は「定理 2.6」となるべきです。
 \end{thm}
 
-\begin{lem}
+\begin{lem}\label{lem:second}
 サブセクション内の補題です。番号は「補題 2.7」となるべきです。
 \end{lem}
 
-\section{番号のリセット確認}
+\section{番号のリセット確認と相互参照テスト}
+\label{sec:third}
 
 第三セクションでは、定理番号が再びリセットされることを確認します。
 
-\begin{thm}
+\begin{thm}\label{thm:sixth}
 これは第三セクションの定理です。番号は「定理 3.1」となるべきです。
 \end{thm}
 
-\begin{defn}
+\begin{defn}\label{defn:third}
 定義環境の番号も「定義 3.1」にリセットされるべきです。
 \end{defn}
 
-\begin{lem}
+\begin{lem}\label{lem:third}
 これは第三セクションの補題です。番号は「補題 3.2」となるべきです。
 \end{lem}
+
+\section{相互参照の総合テスト}
+\label{sec:refs}
+
+このセクションでは、\verb|\ref{}| と \verb|\cref{}| による相互参照が正しく機能することを確認します。
+
+\subsection{\texttt{\textbackslash ref\{\}} を使った相互参照}
+
+\begin{itemize}
+\item セクション参照: \ref{sec:first}, \ref{sec:second}, \ref{sec:third}
+\item サブセクション参照: \ref{subsec:basic}, \ref{subsec:numbering}
+\item 定理参照: \ref{thm:first}, \ref{thm:second}, \ref{thm:third}, \ref{thm:fourth}, \ref{thm:fifth}, \ref{thm:sixth}
+\item 補題参照: \ref{lem:first}, \ref{lem:second}, \ref{lem:third}
+\item 命題参照: \ref{prop:first}
+\item 系参照: \ref{cor:first}
+\item 定義参照: \ref{defn:first}, \ref{defn:second}, \ref{defn:third}
+\end{itemize}
+
+\subsection{\texttt{cleveref} を使った相互参照}
+
+cleverefを使用すると、環境名が自動的に付加されます：
+
+\begin{itemize}
+\item セクション参照: \cref{sec:first}, \cref{sec:second}, \cref{sec:third}
+\item サブセクション参照: \cref{subsec:basic}, \cref{subsec:numbering}
+\item 定理参照: \cref{thm:first}, \cref{thm:second}, \cref{thm:third}
+\item 補題参照: \cref{lem:first}, \cref{lem:second}
+\item 命題参照: \cref{prop:first}
+\item 系参照: \cref{cor:first}
+\item 定義参照: \cref{defn:first}, \cref{defn:second}
+\end{itemize}
+
+複数の参照も可能です: \cref{thm:first,thm:second,thm:third} や \cref{lem:first,prop:first,cor:first}
 
 \section{結論}
 
@@ -133,6 +190,8 @@ $$ a^2 + b^2 = c^2 $$
 \item \verb|\newtheorem{lem}[thm]{補題}| により、複数の環境が同じカウンタを共有できる
 \item サブセクション内でも、親セクションの番号が使用される
 \item 新しいセクションに入ると、カウンタが正しくリセットされる
+\item \verb|\ref{}| による相互参照が正しく機能する
+\item \verb|\cref{}| による相互参照も正しく機能する
 \end{itemize}
 
 \end{document}
