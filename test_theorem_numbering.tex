@@ -1,11 +1,26 @@
-% Test file for theorem numbering by section
+% Complete test file for theorem numbering by section
 % This file demonstrates that theorems can now be numbered within sections
 % using the syntax: \newtheorem{thm}{定理}[section]
+%
+% To compile this file:
+%   uplatex test_theorem_numbering.tex
+%   uplatex test_theorem_numbering.tex  (run twice for references)
+%   dvipdfmx test_theorem_numbering.dvi
+%
+% Or using latexmk:
+%   latexmk test_theorem_numbering.tex
 
 \documentclass[master]{kuisthesis}
 
-% Define theorem environment numbered by section
+% Define theorem-like environments numbered by section
+% This is the main feature being tested
 \newtheorem{thm}{定理}[section]
+\newtheorem{lem}[thm]{補題}        % Shares counter with thm
+\newtheorem{prop}[thm]{命題}       % Shares counter with thm
+\newtheorem{cor}[thm]{系}          % Shares counter with thm
+
+% Define another independent environment to show it doesn't interfere
+\newtheorem{defn}{定義}[section]
 
 \jtitle[定理番号テスト]{定理番号のテスト}
 \etitle{Theorem Numbering Test}
@@ -21,55 +36,103 @@
 \begin{jabstract}
 この文書は、定理環境がセクションごとに番号付けされることを確認するテストです。
 \verb|\newtheorem{thm}{定理}[section]| を使用することで、定理番号が「定理 1.1」のように
-セクション番号と共に表示されます。
+セクション番号と共に表示されます。また、複数の定理型環境が同じカウンタを共有する場合
+（\verb|\newtheorem{lem}[thm]{補題}|）も正しく動作することを確認します。
 \end{jabstract}
 
 \begin{eabstract}
 This document tests that theorem environments can be numbered within sections.
 By using \verb|\newtheorem{thm}{定理}[section]|, theorem numbers will be displayed
-in the format "定理 1.1" with the section number.
+in the format "定理 1.1" with the section number. It also verifies that multiple
+theorem-like environments can share the same counter using the syntax
+\verb|\newtheorem{lem}[thm]{補題}|.
 \end{eabstract}
 
 \tableofcontents
 
-\section{第一章}
+\section{セクション番号による定理番号付けのテスト}
 
-このセクションでは、定理が「定理 1.1」と「定理 1.2」として番号付けされます。
+このセクションでは、定理が「定理 1.1」、「定理 1.2」として番号付けされることを確認します。
 
 \begin{thm}
-これは第一章の最初の定理です。番号は「定理 1.1」となります。
+これは第一セクションの最初の定理です。番号は「定理 1.1」となるべきです。
+$$ a^2 + b^2 = c^2 $$
 \end{thm}
 
 \begin{thm}
-これは第一章の二番目の定理です。番号は「定理 1.2」となります。
+これは第一セクションの二番目の定理です。番号は「定理 1.2」となるべきです。
 \end{thm}
 
-\section{第二章}
+\begin{defn}
+定義環境も独立してセクションごとに番号付けされます。これは「定義 1.1」となるべきです。
+\end{defn}
 
-このセクションでは、定理番号がリセットされ、「定理 2.1」と「定理 2.2」として番号付けされます。
+\section{カウンタの共有テスト}
+
+このセクションでは、定理番号がリセットされ、「定理 2.1」から始まります。
+また、補題、命題、系が定理と同じカウンタを共有することを確認します。
 
 \begin{thm}
-これは第二章の最初の定理です。番号は「定理 2.1」となります。
+これは第二セクションの最初の定理です。番号は「定理 2.1」となるべきです。
 \end{thm}
+
+\begin{lem}
+これは補題ですが、定理と同じカウンタを使用します。番号は「補題 2.2」となるべきです。
+\end{lem}
+
+\begin{prop}
+これは命題ですが、定理と同じカウンタを使用します。番号は「命題 2.3」となるべきです。
+\end{prop}
 
 \begin{thm}
-これは第二章の二番目の定理です。番号は「定理 2.2」となります。
+これは第二セクションの二番目の定理です。番号は「定理 2.4」となるべきです。
 \end{thm}
 
-\subsection{第二章第一節}
+\begin{cor}
+これは系ですが、定理と同じカウンタを使用します。番号は「系 2.5」となるべきです。
+\end{cor}
 
-サブセクション内でも、定理番号は親セクションに基づいて番号付けされます。
+\begin{defn}
+定義環境は独立したカウンタを持つため、番号は「定義 2.1」となるべきです。
+\end{defn}
+
+\subsection{サブセクション内での番号付け}
+
+サブセクション内でも、定理番号は親セクション（第二セクション）に基づいて番号付けされます。
 
 \begin{thm}
-これは第二章第一節の定理です。番号は「定理 2.3」となります。
+サブセクション内の定理です。番号は「定理 2.6」となるべきです。
 \end{thm}
 
-\section{第三章}
+\begin{lem}
+サブセクション内の補題です。番号は「補題 2.7」となるべきです。
+\end{lem}
 
-第三章では、定理番号が再びリセットされます。
+\section{番号のリセット確認}
+
+第三セクションでは、定理番号が再びリセットされることを確認します。
 
 \begin{thm}
-これは第三章の定理です。番号は「定理 3.1」となります。
+これは第三セクションの定理です。番号は「定理 3.1」となるべきです。
 \end{thm}
+
+\begin{defn}
+定義環境の番号も「定義 3.1」にリセットされるべきです。
+\end{defn}
+
+\begin{lem}
+これは第三セクションの補題です。番号は「補題 3.2」となるべきです。
+\end{lem}
+
+\section{結論}
+
+この文書により、以下のことが確認されました：
+\begin{itemize}
+\item \verb|\newtheorem{thm}{定理}[section]| により、定理がセクションごとに番号付けされる
+\item 番号の形式は「定理 X.Y」となる（Xはセクション番号、Yはそのセクション内の定理番号）
+\item \verb|\newtheorem{lem}[thm]{補題}| により、複数の環境が同じカウンタを共有できる
+\item サブセクション内でも、親セクションの番号が使用される
+\item 新しいセクションに入ると、カウンタが正しくリセットされる
+\end{itemize}
 
 \end{document}
