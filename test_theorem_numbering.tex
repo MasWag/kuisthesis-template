@@ -1,0 +1,169 @@
+% Complete test file for theorem numbering by section
+% This file demonstrates that theorems can now be numbered within sections
+% using the syntax: \newtheorem{thm}{定理}[section]
+%
+% To compile this file:
+%   uplatex test_theorem_numbering.tex
+%   uplatex test_theorem_numbering.tex  (run twice for references)
+%   dvipdfmx test_theorem_numbering.dvi
+%
+% Or using latexmk:
+%   latexmk test_theorem_numbering.tex
+
+\documentclass[master]{kuisthesis}
+
+% Define theorem-like environments numbered by section
+% This is the main feature being tested
+\newtheorem{thm}{定理}[section]
+\newtheorem{lem}[thm]{補題}        % Shares counter with thm
+\newtheorem{prop}[thm]{命題}       % Shares counter with thm
+\newtheorem{cor}[thm]{系}          % Shares counter with thm
+
+% Define another independent environment to show it doesn't interfere
+\newtheorem{defn}{定義}[section]
+
+\jtitle[定理番号テスト]{定理番号のテスト}
+\etitle{Theorem Numbering Test}
+\jauthor{テスト太郎}
+\eauthor{Test Taro}
+\supervisor{指導教員 教授}
+\course{通信情報システム}
+\date{2025年1月31日}
+
+\begin{document}
+\maketitle
+
+\begin{jabstract}
+この文書は、定理環境がセクションごとに番号付けされることを確認するテストです。
+\verb|\newtheorem{thm}{定理}[section]| を使用することで、定理番号が「定理 1.1」のように
+セクション番号と共に表示されます。また、複数の定理型環境が同じカウンタを共有する場合
+（\verb|\newtheorem{lem}[thm]{補題}|）も正しく動作することを確認します。
+さらに、\verb|\ref{}| による相互参照が正しく機能することも検証します。
+\end{jabstract}
+
+\begin{eabstract}
+This document tests that theorem environments can be numbered within sections.
+By using \verb|\newtheorem{thm}{定理}[section]|, theorem numbers will be displayed
+in the format "定理 1.1" with the section number. It also verifies that multiple
+theorem-like environments can share the same counter using the syntax
+\verb|\newtheorem{lem}[thm]{補題}|. Additionally, it tests cross-references
+using \verb|\ref{}|.
+\end{eabstract}
+
+\tableofcontents
+
+\section{セクション番号による定理番号付けのテスト}
+\label{sec:first}
+
+このセクション（\ref{sec:first}）では、定理が「定理 1.1」、「定理 1.2」として番号付けされることを確認します。
+
+\begin{thm}\label{thm:first}
+これは第一セクションの最初の定理です。番号は「定理 1.1」となるべきです。
+$$ a^2 + b^2 = c^2 $$
+\end{thm}
+
+\begin{thm}\label{thm:second}
+これは第一セクションの二番目の定理です。番号は「定理 1.2」となるべきです。
+\end{thm}
+
+\begin{defn}\label{defn:first}
+定義環境も独立してセクションごとに番号付けされます。これは「定義 1.1」となるべきです。
+\end{defn}
+
+\section{カウンタの共有テストと相互参照}
+\label{sec:second}
+
+このセクション（\ref{sec:second}）では、定理番号がリセットされ、「定理 2.1」から始まります。
+また、補題、命題、系が定理と同じカウンタを共有することを確認します。
+
+\subsection{基本的な定理型環境}
+\label{subsec:basic}
+
+サブセクション（\ref{subsec:basic}）内での定理を確認します。
+
+\begin{thm}\label{thm:third}
+これは第二セクションの最初の定理です。番号は「定理 2.1」となるべきです。
+前述の\ref{thm:first}を参照しています。
+\end{thm}
+
+\begin{lem}\label{lem:first}
+これは補題ですが、定理と同じカウンタを使用します。番号は「補題 2.2」となるべきです。
+\end{lem}
+
+\begin{prop}\label{prop:first}
+これは命題ですが、定理と同じカウンタを使用します。番号は「命題 2.3」となるべきです。
+\end{prop}
+
+\begin{thm}\label{thm:fourth}
+これは第二セクションの二番目の定理です。番号は「定理 2.4」となるべきです。
+\end{thm}
+
+\begin{cor}\label{cor:first}
+これは系ですが、定理と同じカウンタを使用します。番号は「系 2.5」となるべきです。
+\ref{thm:fourth}の系として導かれます。
+\end{cor}
+
+\begin{defn}\label{defn:second}
+定義環境は独立したカウンタを持つため、番号は「定義 2.1」となるべきです。
+\end{defn}
+
+\subsection{サブセクション内での番号付け}
+\label{subsec:numbering}
+
+サブセクション内でも、定理番号は親セクション（第二セクション）に基づいて番号付けされます。
+
+\begin{thm}\label{thm:fifth}
+サブセクション内の定理です。番号は「定理 2.6」となるべきです。
+\end{thm}
+
+\begin{lem}\label{lem:second}
+サブセクション内の補題です。番号は「補題 2.7」となるべきです。
+\end{lem}
+
+\section{番号のリセット確認と相互参照テスト}
+\label{sec:third}
+
+第三セクションでは、定理番号が再びリセットされることを確認します。
+
+\begin{thm}\label{thm:sixth}
+これは第三セクションの定理です。番号は「定理 3.1」となるべきです。
+\end{thm}
+
+\begin{defn}\label{defn:third}
+定義環境の番号も「定義 3.1」にリセットされるべきです。
+\end{defn}
+
+\begin{lem}\label{lem:third}
+これは第三セクションの補題です。番号は「補題 3.2」となるべきです。
+\end{lem}
+
+\section{相互参照の総合テスト}
+\label{sec:refs}
+
+このセクションでは、\verb|\ref{}| による相互参照が正しく機能することを確認します。
+
+\subsection{\texttt{\textbackslash ref\{\}} を使った相互参照}
+
+\begin{itemize}
+\item セクション参照: \ref{sec:first}, \ref{sec:second}, \ref{sec:third}
+\item サブセクション参照: \ref{subsec:basic}, \ref{subsec:numbering}
+\item 定理参照: \ref{thm:first}, \ref{thm:second}, \ref{thm:third}, \ref{thm:fourth}, \ref{thm:fifth}, \ref{thm:sixth}
+\item 補題参照: \ref{lem:first}, \ref{lem:second}, \ref{lem:third}
+\item 命題参照: \ref{prop:first}
+\item 系参照: \ref{cor:first}
+\item 定義参照: \ref{defn:first}, \ref{defn:second}, \ref{defn:third}
+\end{itemize}
+
+\section{結論}
+
+この文書により、以下のことが確認されました：
+\begin{itemize}
+\item \verb|\newtheorem{thm}{定理}[section]| により、定理がセクションごとに番号付けされる
+\item 番号の形式は「定理 X.Y」となる（Xはセクション番号、Yはそのセクション内の定理番号）
+\item \verb|\newtheorem{lem}[thm]{補題}| により、複数の環境が同じカウンタを共有できる
+\item サブセクション内でも、親セクションの番号が使用される
+\item 新しいセクションに入ると、カウンタが正しくリセットされる
+\item \verb|\ref{}| による相互参照が正しく機能する
+\end{itemize}
+
+\end{document}
