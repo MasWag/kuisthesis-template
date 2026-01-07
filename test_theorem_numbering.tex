@@ -12,22 +12,6 @@
 
 \documentclass[master]{kuisthesis}
 
-% Load cleveref for smart cross-references (optional but recommended for testing)
-% Note: cleveref must be loaded after hyperref (if used)
-\usepackage{cleveref}
-
-% Configure cleveref for Japanese names
-% For sections and subsections: use empty names so cleveref doesn't prepend anything
-% It will then just use \thesection ("第X章") and \thesubsection ("X.Y") directly
-\crefname{section}{}{}
-\crefname{subsection}{}{}
-% For theorem-like environments, use \crefname to prepend the environment name
-\crefname{thm}{定理}{定理}
-\crefname{lem}{補題}{補題}
-\crefname{prop}{命題}{命題}
-\crefname{cor}{系}{系}
-\crefname{defn}{定義}{定義}
-
 % Define theorem-like environments numbered by section
 % This is the main feature being tested
 \newtheorem{thm}{定理}[section]
@@ -54,7 +38,7 @@
 \verb|\newtheorem{thm}{定理}[section]| を使用することで、定理番号が「定理 1.1」のように
 セクション番号と共に表示されます。また、複数の定理型環境が同じカウンタを共有する場合
 （\verb|\newtheorem{lem}[thm]{補題}|）も正しく動作することを確認します。
-さらに、\verb|\ref{}| および \verb|\cref{}| による相互参照が正しく機能することも検証します。
+さらに、\verb|\ref{}| による相互参照が正しく機能することも検証します。
 \end{jabstract}
 
 \begin{eabstract}
@@ -63,7 +47,7 @@ By using \verb|\newtheorem{thm}{定理}[section]|, theorem numbers will be displ
 in the format "定理 1.1" with the section number. It also verifies that multiple
 theorem-like environments can share the same counter using the syntax
 \verb|\newtheorem{lem}[thm]{補題}|. Additionally, it tests cross-references
-using \verb|\ref{}| and \verb|\cref{}|.
+using \verb|\ref{}|.
 \end{eabstract}
 
 \tableofcontents
@@ -99,7 +83,7 @@ $$ a^2 + b^2 = c^2 $$
 
 \begin{thm}\label{thm:third}
 これは第二セクションの最初の定理です。番号は「定理 2.1」となるべきです。
-前述の\ref{thm:first}（\cref{thm:first}）を参照しています。
+前述の\ref{thm:first}を参照しています。
 \end{thm}
 
 \begin{lem}\label{lem:first}
@@ -156,7 +140,7 @@ $$ a^2 + b^2 = c^2 $$
 \section{相互参照の総合テスト}
 \label{sec:refs}
 
-このセクションでは、\verb|\ref{}| と \verb|\cref{}| による相互参照が正しく機能することを確認します。
+このセクションでは、\verb|\ref{}| による相互参照が正しく機能することを確認します。
 
 \subsection{\texttt{\textbackslash ref\{\}} を使った相互参照}
 
@@ -170,22 +154,6 @@ $$ a^2 + b^2 = c^2 $$
 \item 定義参照: \ref{defn:first}, \ref{defn:second}, \ref{defn:third}
 \end{itemize}
 
-\subsection{\texttt{cleveref} を使った相互参照}
-
-cleverefを使用すると、環境名が自動的に付加されます：
-
-\begin{itemize}
-\item セクション参照: \cref{sec:first}, \cref{sec:second}, \cref{sec:third}
-\item サブセクション参照: \cref{subsec:basic}, \cref{subsec:numbering}
-\item 定理参照: \cref{thm:first}, \cref{thm:second}, \cref{thm:third}
-\item 補題参照: \cref{lem:first}, \cref{lem:second}
-\item 命題参照: \cref{prop:first}
-\item 系参照: \cref{cor:first}
-\item 定義参照: \cref{defn:first}, \cref{defn:second}
-\end{itemize}
-
-複数の参照も可能です: \cref{thm:first,thm:second,thm:third} や \cref{lem:first,prop:first,cor:first}
-
 \section{結論}
 
 この文書により、以下のことが確認されました：
@@ -196,7 +164,6 @@ cleverefを使用すると、環境名が自動的に付加されます：
 \item サブセクション内でも、親セクションの番号が使用される
 \item 新しいセクションに入ると、カウンタが正しくリセットされる
 \item \verb|\ref{}| による相互参照が正しく機能する
-\item \verb|\cref{}| による相互参照も正しく機能する
 \end{itemize}
 
 \end{document}
