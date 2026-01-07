@@ -17,11 +17,11 @@
 \usepackage{cleveref}
 
 % Configure cleveref for Japanese names
-% For sections, use \crefformat to control the exact output format
-% #1 = counter value (just the number), #2 = hyperlink start, #3 = hyperlink end
-\crefformat{section}{#2第#1章#3}
-\crefformat{subsection}{#2#1#3}
-% For theorem-like environments, use \crefname for simple name prefixes
+% For sections and subsections: use empty names so cleveref doesn't prepend anything
+% It will then just use \thesection (" 第X章") and \thesubsection ("X.Y") directly
+\crefname{section}{}{} 
+\crefname{subsection}{}{}
+% For theorem-like environments, use \crefname to prepend the environment name
 \crefname{thm}{定理}{定理}
 \crefname{lem}{補題}{補題}
 \crefname{prop}{命題}{命題}
