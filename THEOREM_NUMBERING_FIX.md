@@ -45,18 +45,17 @@ The fix separates the internal representation of `\thesection` from its display 
 
 With this change, `\ref{section-label}` will return just the section number (e.g., "1") instead of the full chapter representation (e.g., "第1章"). This is the standard LaTeX behavior and is consistent with how references work for subsections and other numbered elements.
 
-If you prefer to have references show the full chapter format, you can add this to your document preamble:
+If you need the full chapter format in your text, you can write it explicitly when referencing:
 
 ```latex
-% For Japanese documents
-\renewcommand{\p@section}{第}
-\renewcommand{\thesection}{\arabic{section}章}
+% Japanese documents
+第\ref{sec:intro}章を参照
 
-% For English documents  
-\renewcommand{\p@section}{Chapter~}
+% English documents  
+see Chapter~\ref{sec:intro}
 ```
 
-However, this will bring back the original theorem numbering issue. The recommended approach is to use the section number in references and add contextual text in your writing (e.g., "第1章参照" or "see Chapter 1").
+This approach maintains the correct theorem numbering while giving you full control over how references appear in text.
 
 ## Technical Details
 
