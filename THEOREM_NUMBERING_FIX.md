@@ -85,7 +85,7 @@ The key changes in `kuisthesis.sty`:
 \def\@seccntformat#1{%
   \def\@tempa{section}\def\@tempb{#1}%
   \ifx\@tempa\@tempb
-    第\csname the#1\endcsname 章\quad
+    第\csname the#1\endcsname~章\quad
   \else
     \csname the#1\endcsname\quad
   \fi}
@@ -100,4 +100,4 @@ This change is **mostly backward compatible**. Existing documents will continue 
 - Theorem/figure/equation numbering that references sections is improved
 - Cross-references to sections (`\ref`) now return just the number (e.g., "1") instead of the full format (e.g., "第1章")
   - This is standard LaTeX behavior and is generally preferred for consistency with subsection references
-  - If needed, you can restore the old reference format using `\p@section` (see above)
+  - To get the full chapter format in text, write it explicitly: `第\ref{sec:intro}章を参照` or `see Chapter~\ref{sec:intro}`
