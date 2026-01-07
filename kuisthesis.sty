@@ -757,8 +757,9 @@
 \def\@nthm#1#2{\@ifnextchar[{\@xnthm{#1}{#2}}{\@ynthm{#1}{#2}}}
 \def\@xnthm#1#2[#3]{\expandafter\@ifdefinable\csname #1\endcsname
 	{\newcounter{#1}[#3]%
-	\expandafter\xdef\csname the#1\endcsname{\expandafter\noexpand
-	  \csname the#3\endcsname \@thmcountersep \@thmcounter{#1}}%
+	\expandafter\xdef\csname the#1\endcsname{%
+	  \expandafter\noexpand\csname @arabic\endcsname\csname c@#3\endcsname
+	  \@thmcountersep \@thmcounter{#1}}%
 	\global\@namedef{#1}{\@thm{#1}{#2}}\global\@namedef{end#1}{\@endtheorem}}}
 \def\@ynthm#1#2{\expandafter\@ifdefinable\csname #1\endcsname
 	{\newcounter{#1}%
