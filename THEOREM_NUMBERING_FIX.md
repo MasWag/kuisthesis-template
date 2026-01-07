@@ -41,6 +41,23 @@ The fix separates the internal representation of `\thesection` from its display 
 - Consistent behavior across all numbered environments
 - Backward compatible with existing documents (section headings look the same)
 
+## Impact on Cross-References
+
+With this change, `\ref{section-label}` will return just the section number (e.g., "1") instead of the full chapter representation (e.g., "第1章"). This is the standard LaTeX behavior and is consistent with how references work for subsections and other numbered elements.
+
+If you prefer to have references show the full chapter format, you can add this to your document preamble:
+
+```latex
+% For Japanese documents
+\renewcommand{\p@section}{第}
+\renewcommand{\thesection}{\arabic{section}章}
+
+% For English documents  
+\renewcommand{\p@section}{Chapter~}
+```
+
+However, this will bring back the original theorem numbering issue. The recommended approach is to use the section number in references and add contextual text in your writing (e.g., "第1章参照" or "see Chapter 1").
+
 ## Technical Details
 
 The key changes in `kuisthesis.sty`:
@@ -78,8 +95,10 @@ The key changes in `kuisthesis.sty`:
 
 ## Impact on Existing Documents
 
-This change is **backward compatible**. Existing documents will continue to work without modification:
+This change is **mostly backward compatible**. Existing documents will continue to work without modification:
 - Section headings look exactly the same
-- Table of contents entries are unchanged
-- Cross-references work correctly
-- Only theorem/figure/equation numbering that references sections is improved
+- Table of contents entries are unchanged  
+- Theorem/figure/equation numbering that references sections is improved
+- Cross-references to sections (`\ref`) now return just the number (e.g., "1") instead of the full format (e.g., "第1章")
+  - This is standard LaTeX behavior and is generally preferred for consistency with subsection references
+  - If needed, you can restore the old reference format using `\p@section` (see above)
