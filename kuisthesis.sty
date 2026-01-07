@@ -1,6 +1,7 @@
 % Copyright (C) 1996 by Dept. Information Science, Kyoto University
 % Copyright (C) 1999 by Computer Science Course,
 %	Scool of Informatics and Mathematical Science
+% kuisthesis.sty 07-Jan-26 by GitHub Copilot     (ver 3.01)
 % kuisthesis.sty 13-Dec-25 by Kotaro Matsuoka   (ver 3.00)
 % kuisthesis.sty 26-Jan-00 by Hiroyuki Tarumi   (ver 2.11)
 % kuisthesis.sty 14-Dec-99 by Hiroyuki Tarumi   (ver 2.10)
@@ -17,6 +18,14 @@
 % j-article.sty 10-Feb-89 from report.sty 16-Mar-88
 %
 % REVISION
+% ver 3.01 07-Jan-26 by GitHub Copilot
+% (1) Fix theorem numbering issue: \thesection now returns just the section
+%     number (\arabic{section}) instead of "第N章" or "Chapter N".
+% (2) Add \@seccntformat to format section headings with chapter prefix,
+%     so section headings still display as "第N章" or "Chapter N".
+% (3) This allows theorems defined with [section] option to be numbered
+%     correctly as "定理 1.1" instead of "定理 第1章.1".
+%
 % ver 3.00 13-Dec-25 by Kotaro Matsuoka
 % (1) Add LuaLaTeX support: engine detection (\ifLuaTeX) and auto-loading
 %     luatexja package.
@@ -572,15 +581,33 @@
 \newcounter{paragraph}[subsubsection]
 \newcounter{subparagraph}[paragraph]
 
-\ifDS@english						% 2.10 (1) >>
-\def\thesection{Chapter~\arabic{section}}
-\else	
-\def\thesection{第\arabic{section}章}
-\fi							% 2.10 (1) <<
+% 3.01: Fix theorem numbering by separating \thesection from section display format
+% \thesection now returns just the number for use in theorem numbering
+\def\thesection{\arabic{section}}				% 3.01
 \def\thesubsection{\arabic{section}.\arabic{subsection}}	% 2.10 (1)
 \def\thesubsubsection{\thesubsection.\arabic{subsubsection}}
 \def\theparagraph {\thesubsubsection.\arabic{paragraph}}
 \def\thesubparagraph {\theparagraph.\arabic{subparagraph}}
+
+% 3.01: Define \@seccntformat to format section headings with chapter prefix
+% This keeps section headings as "第N章" or "Chapter N" while theorems use just the number
+\ifDS@english						% 3.01 >>
+\def\@seccntformat#1{%
+  \def\@tempa{section}\def\@tempb{#1}%
+  \ifx\@tempa\@tempb
+    Chapter~\csname the#1\endcsname\quad
+  \else
+    \csname the#1\endcsname\quad
+  \fi}
+\else	
+\def\@seccntformat#1{%
+  \def\@tempa{section}\def\@tempb{#1}%
+  \ifx\@tempa\@tempb
+    第\csname the#1\endcsname 章\quad
+  \else
+    \csname the#1\endcsname\quad
+  \fi}
+\fi							% 3.01 <<
 
 \setcounter{secnumdepth}{3}
 
