@@ -1,0 +1,75 @@
+% Test file for theorem numbering by section
+% This file demonstrates that theorems can now be numbered within sections
+% using the syntax: \newtheorem{thm}{定理}[section]
+
+\documentclass[master]{kuisthesis}
+
+% Define theorem environment numbered by section
+\newtheorem{thm}{定理}[section]
+
+\jtitle[定理番号テスト]{定理番号のテスト}
+\etitle{Theorem Numbering Test}
+\jauthor{テスト太郎}
+\eauthor{Test Taro}
+\supervisor{指導教員 教授}
+\course{通信情報システム}
+\date{2025年1月31日}
+
+\begin{document}
+\maketitle
+
+\begin{jabstract}
+この文書は、定理環境がセクションごとに番号付けされることを確認するテストです。
+\verb|\newtheorem{thm}{定理}[section]| を使用することで、定理番号が「定理 1.1」のように
+セクション番号と共に表示されます。
+\end{jabstract}
+
+\begin{eabstract}
+This document tests that theorem environments can be numbered within sections.
+By using \verb|\newtheorem{thm}{定理}[section]|, theorem numbers will be displayed
+in the format "定理 1.1" with the section number.
+\end{eabstract}
+
+\tableofcontents
+
+\section{第一章}
+
+このセクションでは、定理が「定理 1.1」と「定理 1.2」として番号付けされます。
+
+\begin{thm}
+これは第一章の最初の定理です。番号は「定理 1.1」となります。
+\end{thm}
+
+\begin{thm}
+これは第一章の二番目の定理です。番号は「定理 1.2」となります。
+\end{thm}
+
+\section{第二章}
+
+このセクションでは、定理番号がリセットされ、「定理 2.1」と「定理 2.2」として番号付けされます。
+
+\begin{thm}
+これは第二章の最初の定理です。番号は「定理 2.1」となります。
+\end{thm}
+
+\begin{thm}
+これは第二章の二番目の定理です。番号は「定理 2.2」となります。
+\end{thm}
+
+\subsection{第二章第一節}
+
+サブセクション内でも、定理番号は親セクションに基づいて番号付けされます。
+
+\begin{thm}
+これは第二章第一節の定理です。番号は「定理 2.3」となります。
+\end{thm}
+
+\section{第三章}
+
+第三章では、定理番号が再びリセットされます。
+
+\begin{thm}
+これは第三章の定理です。番号は「定理 3.1」となります。
+\end{thm}
+
+\end{document}
