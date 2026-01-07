@@ -16,7 +16,11 @@
 % Note: cleveref must be loaded after hyperref (if used)
 \usepackage{cleveref}
 
-% Configure cleveref for Japanese theorem names
+% Configure cleveref for Japanese names
+% For sections and subsections, use empty names since \thesection already contains "第X章"
+\crefformat{section}{#2第#1章#3}
+\crefformat{subsection}{#2#1#3}
+% For theorem-like environments
 \crefname{thm}{定理}{定理}
 \crefname{lem}{補題}{補題}
 \crefname{prop}{命題}{命題}
