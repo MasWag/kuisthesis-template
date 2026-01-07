@@ -1,0 +1,85 @@
+# Theorem Numbering Fix (Version 3.01)
+
+## Problem
+
+When using `\newtheorem` with `[section]` option to create theorems numbered by section, the theorem numbers included the full section representation ("第N章" or "Chapter N") instead of just the section number.
+
+For example:
+```latex
+\newtheorem{theorem}{定理}[section]
+\section{サンプル}
+\begin{theorem}
+...
+\end{theorem}
+```
+
+Would produce "定理 第1章.1" instead of the expected "定理 1.1".
+
+## Previous Workaround
+
+Users had to manually redefine `\thesection` around each section:
+
+```latex
+\renewcommand{\thesection}{第\arabic{section}章}
+\section{サンプル}
+\renewcommand{\thesection}{\arabic{section}}
+```
+
+## Solution (Version 3.01)
+
+The fix separates the internal representation of `\thesection` from its display format:
+
+1. `\thesection` now returns just `\arabic{section}` (e.g., "1", "2", "3")
+2. A new `\@seccntformat` command handles the display formatting for section headings
+3. Section headings still display as "第N章" or "Chapter N"
+4. Theorems, figures, equations, and other counters that reference sections use just the number
+
+## Benefits
+
+- No manual workarounds needed
+- Cleaner, more maintainable code
+- Consistent behavior across all numbered environments
+- Backward compatible with existing documents (section headings look the same)
+
+## Technical Details
+
+The key changes in `kuisthesis.sty`:
+
+```latex
+% Old definition (ver 3.00 and earlier)
+\ifDS@english
+\def\thesection{Chapter~\arabic{section}}
+\else	
+\def\thesection{第\arabic{section}章}
+\fi
+
+% New definition (ver 3.01)
+\def\thesection{\arabic{section}}
+
+% New \@seccntformat to format section headings
+\ifDS@english
+\def\@seccntformat#1{%
+  \def\@tempa{section}\def\@tempb{#1}%
+  \ifx\@tempa\@tempb
+    Chapter~\csname the#1\endcsname\quad
+  \else
+    \csname the#1\endcsname\quad
+  \fi}
+\else	
+\def\@seccntformat#1{%
+  \def\@tempa{section}\def\@tempb{#1}%
+  \ifx\@tempa\@tempb
+    第\csname the#1\endcsname 章\quad
+  \else
+    \csname the#1\endcsname\quad
+  \fi}
+\fi
+```
+
+## Impact on Existing Documents
+
+This change is **backward compatible**. Existing documents will continue to work without modification:
+- Section headings look exactly the same
+- Table of contents entries are unchanged
+- Cross-references work correctly
+- Only theorem/figure/equation numbering that references sections is improved

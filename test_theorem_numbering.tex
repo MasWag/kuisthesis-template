@@ -1,0 +1,103 @@
+% Test document for theorem numbering fix (ver 3.01)
+% This document demonstrates that theorems are now numbered correctly
+% as "定理 1.1" instead of "定理 第1章.1"
+
+\documentclass[master]{kuisthesis}
+
+\jtitle{定理番号修正のテスト}
+\etitle{Test of Theorem Numbering Fix}
+\jauthor{テスト 太郎}
+\eauthor{Taro Test}
+\supervisor{指導 教授}
+\course{通信情報システム}
+\date{2026年1月7日}
+
+% Define theorem-like environments
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{補題}
+\newtheorem{definition}{定義}[section]
+
+\begin{document}
+\maketitle
+
+\begin{jabstract}
+本文書は kuisthesis.sty バージョン 3.01 における定理番号の修正をテストするた
+めの文書である。定理環境を section オプションで定義した場合、定理番号が
+「定理 1.1」のように正しく表示されることを確認する。
+\end{jabstract}
+
+\begin{eabstract}
+This document tests the theorem numbering fix in kuisthesis.sty version 3.01.
+It verifies that theorems defined with the [section] option are numbered 
+correctly as "定理 1.1" instead of "定理 第1章.1".
+\end{eabstract}
+
+\tableofcontents
+
+\section{はじめに}
+
+本節では定理番号の修正について説明する。
+
+\subsection{背景}
+
+以前のバージョンでは、\verb|\newtheorem{theorem}{定理}[section]| のように
+定理環境を定義すると、定理番号に章番号全体（「第1章」）が含まれてしまい、
+「定理 第1章.1」のように表示されていた。
+
+\subsection{解決方法}
+
+バージョン 3.01 では、\verb|\thesection| の定義を変更し、内部的には単に
+アラビア数字を返すようにした。一方、章見出しの表示には \verb|\@seccntformat|
+を使用して「第N章」を表示する。
+
+\section{定理の例}
+
+本節では実際に定理を定義して、番号が正しく表示されることを確認する。
+
+\begin{theorem}
+この定理は「定理 2.1」と番号付けられるべきである。
+「定理 第2章.1」とはならない。
+\end{theorem}
+
+\begin{proof}
+証明は省略する。
+\end{proof}
+
+\begin{lemma}
+この補題は「補題 2.2」と番号付けられるべきである。
+\end{lemma}
+
+\begin{definition}
+この定義は「定義 2.1」と番号付けられるべきである。
+\end{definition}
+
+\begin{theorem}
+この定理は「定理 2.3」と番号付けられるべきである。
+\end{theorem}
+
+\section{検証}
+
+本節でさらに定理を定義する。
+
+\begin{theorem}
+この定理は「定理 3.1」と番号付けられるべきである。
+前の章からの連番ではなく、章ごとに番号がリセットされる。
+\end{theorem}
+
+\subsection{副節での定理}
+
+副節でも定理を定義できる。
+
+\begin{theorem}
+この定理は「定理 3.2」と番号付けられるべきである。
+副節に含まれていても、章単位で番号付けされる。
+\end{theorem}
+
+\section{おわりに}
+
+本文書により、定理番号が正しく動作することを確認した。
+
+\acknowledgments
+本修正にご協力いただいた皆様に感謝する。
+
+\end{document}
